@@ -1,0 +1,76 @@
+/* Sandbox CSS/HTML v0.1
+ * By Pablo Cazorla (pablo.cazorla@mercadoLibre.com)- Copyleft 2011.
+ * Sandbox CSS/HTML v0.1 is licensed under a Creative Commons Reconocimiento 3.0 Unported License.
+ */
+body{
+	background:#dde7ee;
+}
+#cssSandbox-board{
+	position:absolute;
+	z-index:9999;
+	top:10px;
+	right:10px;	font: 12px  Arial, sans-serif;
+	font-weight:bold;
+	line-height:100%;
+	width:300px;
+	color:#444;
+	background:#ddd;
+	border:solid 1px #aaa;
+	border-radius:10px;
+	-moz-border-radius:5px 5px 10px 10px;
+	-webkit-border-radius:10px;
+	-moz-box-shadow:0 4px 9px rgba(0,0,0,.3);
+	padding-bottom:6px;
+}
+#cssSandbox-header{
+	background:#999;
+	color:#FFF;	
+	border-bottom:solid 1px #888;
+}
+#cssSandbox-min{
+	display:block;
+	float:right;
+	padding:0 5px;
+	margin: 5px;
+	border:solid 1px #ddd;
+	cursor:pointer;
+}
+#cssSandbox-header-touch{
+	display:block;
+	padding:5px;
+	margin-right:30px;
+	cursor:pointer;
+}
+
+#cssSandbox-content{	
+	padding:0 15px;
+}
+.cssSandbox-title{
+	display:block;
+	margin:10px 5px 2px;
+}
+.cssSandbox-clear{
+	display:block;
+	text-align:right;
+	margin-right:10px;
+	font-weight:normal;
+	cursor:pointer;
+	color:#25b;
+	border-bottom:solid 1px #ccc;
+}
+#cssSandbox-html,
+#cssSandbox-css{
+	padding:5px;
+	width:255px;
+	height:220px;
+	border:solid 1px #ccc;
+}
+#cssSandbox-html{color:#444;}
+#cssSandbox-css{color:#14a;}
+#cssSandbox-about{
+	font-size:10px;
+	font-weight:normal;
+	margin:10px 0 5px;
+}
+
+
