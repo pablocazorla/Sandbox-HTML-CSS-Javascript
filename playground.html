@@ -1,21 +1,20 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>Sandbox HTML/CSS/Javascript</title>		
+		<title>CSS Sandbox</title>
 		<link href="css/sbx.css" rel="stylesheet" type="text/css" />
 	</head>
-	
-	<body>		
-		<div id="cssSandbox-board">
-			<div id="cssSandbox-header">
-				<span id="cssSandbox-min" title="Minimize">-</span>	
-				<span id="cssSandbox-header-touch">Sandbox HTML/CSS/Javascript</span>				
-			</div>
-			<div id="cssSandbox-content">
-				<span class="cssSandbox-title" style="margin-left:0;border-bottom:solid 1px #ccc;"><input type="checkbox" id="cssSandbox-reset" name="cssSandbox-reset" />Reset CSS	</span>	
-				<span class="cssSandbox-title">HTML:</span>			
-				<textarea id="cssSandbox-html">
+	<body>
+		<div id="ed-body"></div>
+		<div id="ed-tools">
+			<div id="ed-close-open">-</div>
+			<div id="ed-resize"></div>
+			<div id="ed-tools-inner">
+				<div class="ed-tab ed-current" rel="ed-HTML-palet">HTML</div>
+				<div class="ed-tab" rel="ed-CSS-palet">CSS</div>
+				<div class="ed-palet" id="ed-HTML-palet">
+					<textarea style="display:none;" id="html-input">
 <div class="page">
 	<h1>Sandbox HTML/CSS/Javascript v0.1</h1>			
 	<p><b>Sandbox</b> es una aplicación que te permite probar tu html y css "en vivo": puedes ver los cambios que relices instantáneamente.</p>
@@ -30,10 +29,11 @@
 		By <a href="mailto:contacto@suriken.ws" target="_blank">Pablo Cazorla</a> - Copyleft 2011. Sandbox CSS/HTML v0.1 is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons Reconocimiento 3.0 Unported License</a>.
 	</div>
 </div>
-				</textarea>
-				<span class="cssSandbox-clear" id="cssSandbox-clear-html">Clear</span>
-				<span class="cssSandbox-title">CSS:</span>				
-				<textarea id="cssSandbox-css">
+					</textarea>
+					<pre id="html-output"></pre>
+				</div>
+				<div class="ed-palet" id="ed-CSS-palet" style="display: none;">
+					<textarea style="display:none;" id="css-input">
 .page{
 	font: 14px Arial, sans-serif;
 	color:#333;
@@ -65,18 +65,13 @@ li{
 b{
 	font-weight:bold;
 }
-				</textarea>
-				<span class="cssSandbox-clear" id="cssSandbox-clear-css">Clear</span>
-				<div id="cssSandbox-about">
-					By <a href="mailto:contacto@suriken.ws" target="_blank">Pablo Cazorla</a> - Copyleft 2011. Sandbox CSS/HTML v0.1 is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons Reconocimiento 3.0 Unported License</a>.
+					</textarea>
+					<pre id="css-output"></pre>
 				</div>
 			</div>
-		</div>		
-		<div id="cssSandbox-container"></div>
-		<style id="cssSandbox-style-reset"></style>
-		<style id="cssSandbox-style"></style>		
-		<!-- JS -->
-		<script type="text/javascript" src="js/jquery.js"></script>
+		</div>
+		<style id="ed-style"></style>
+		<script type="text/javascript" src="js/jquery.js"></script>	
 		<script type="text/javascript" src="js/sbx.js"></script>
 	</body>
 </html>

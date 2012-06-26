@@ -1,106 +1,124 @@
-/* Sandbox CSS/HTML v0.1
- * By Pablo Cazorla (pablo.cazorla@mercadoLibre.com) - Copyleft 2011.
- * Sandbox CSS/HTML v0.1 is licensed under a Creative Commons Reconocimiento 3.0 Unported License.
- */ 
+//Template
 $(document).ready(function(){
+	var $window = $(window),
+		$edTools = $('#ed-tools'),
+		$edBody = $('#ed-body'),
+		$edStyle = $('#ed-style'),
+		$edToolsInner = $('#ed-tools-inner'),
+		$edResize = $('#ed-resize'),
+		$htmlInput = $('#html-input'),
+		$cssInput = $('#css-input'),
+		$htmlOutput = $('#html-output'),
+		$cssOutput = $('#css-output');
 	
-	//VARIABLES:
-	var cssSandbox_minimize = false
-	var cssSandbox_dragging = false;
-	var offX;
-	var offY;
-	var cssSandbox_reset_content = "html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}";
-	var intervalSandbox = null;
+	//close-open
+	var openClose = true;
+	var actualWidth = $edTools.width();
+	$('#ed-close-open').click(function(){
+		var $this = $(this);
+		if(openClose){
+			actualWidth = $edTools.width();
+			$edResize.hide();
+			$edToolsInner.hide();
+			$this.css('left', '5px').html('+');
+			$edTools.animate({'width':'24px'},100);
+			$edBody.animate({'right':'24px'},100);		
+			openClose = false;
+		}else{
+			$edTools.animate({'width':actualWidth+'px'},100,function(){
+				$edToolsInner.show();
+				$edResize.show();
+				$this.css('left', '12px').html('-');
+			});
+			$edBody.animate({'right':actualWidth+'px'},100);
+			openClose = true;
+		}
+		return false;
+	});
+		
+	//resize
+	var resize = false;
+	$edResize.mousedown(function(){
+		resize = true;
+		return false;
+	});
+	$(document).mousemove(function(ev){
+		if(resize){
+			var posX = $window.width() - ev.pageX;
+			if(posX < 200){
+				posX = 200;
+			}
+			$edTools.width(posX+'px');
+			$('#ed-body').css('right',posX + 'px');
+			return false;		
+		}			
+	}).mouseup(function(){
+		if(resize){
+			resize = false;
+			return false;
+		}
+	});	
 	
-	//STORE ELEMENTS:
-	var $cssSandbox_container = $('#cssSandbox-container');
-	var $cssSandbox_html = $('#cssSandbox-html');
-	var $cssSandbox_style_reset = $('#cssSandbox-style-reset');
-	var $cssSandbox_style = $('#cssSandbox-style');
-	var $cssSandbox_css = $('#cssSandbox-css');
-	var $cssSandbox_content = $('#cssSandbox-content');
-	var $cssSandbox_min = $('#cssSandbox-min');
-	var $cssSandbox_board = $('#cssSandbox-board');
-	var $cssSandbox_reset = $('#cssSandbox-reset');
+	//tabs
+	var currentTab = '#ed-HTML-palet',
+	$edTab = $('.ed-tab')	
+	.click(function(){		
+		var newTab = '#' + $(this).attr('rel');
+		if(newTab != currentTab){			
+			$(currentTab).hide();
+			$(newTab).show();
+			$edTab.removeClass('ed-current');
+			$(this).addClass('ed-current');			
+			currentTab = newTab;
+		}
+		return false;		
+	});
 	
 	//REDRAW SANDBOX:	
-	var redrawSandbox = function(){
-		$cssSandbox_container.html($cssSandbox_html.val());
-		$cssSandbox_style.html($cssSandbox_css.val());
+	var drawing = function(){
+		$edBody.html($htmlInput.val());
+		$edStyle.html($cssInput.val());
 	};	
-	var getRedraw = function(cond){
+	var draw = function(cond){
 		if(cond){			
-			intervalSandbox = setInterval(redrawSandbox,20);			
+			intervalSandbox = setInterval(drawing,20);			
 		}else{			
 			clearTimeout(intervalSandbox);			
 		}
 	};
-	redrawSandbox();
+	drawing();	
 	
-	//EVENTS:
-	$cssSandbox_html.focus(function(){
-		getRedraw(true);		
-	}).blur(function(){
-		getRedraw(false);		
+	
+	//Render Code
+	var renderCode = function(code){
+		var text = $('#'+code+'-input').val().replace(/</g,'&lt;').replace(/>/g,'&gt;');
+		$('#'+code+'-output').html(text);		
+	};
+	renderCode('html');
+	renderCode('css');
+	
+	//HTML
+	$htmlOutput.click(function(){
+		$(this).hide();
+		$htmlInput.show().focus();
+		draw(true);		
 	});
-	
-	$cssSandbox_css.focus(function(){
-		getRedraw(true);		
-	}).blur(function(){
-		getRedraw(false);		
+	$htmlInput.blur(function(){
+		$(this).hide();
+		renderCode('html');
+		$htmlOutput.show();
+		draw(false);
 	});
-	
-			
-	//Drag and Drop #cssSandbox-board
-	$('#cssSandbox-header-touch').mousedown(function(ev){
-		offX = ev.pageX - $cssSandbox_board.offset().left;
-		offY = ev.pageY - $cssSandbox_board.offset().top;
-		cssSandbox_dragging = true;
-		return false;
+	//CSS
+	$cssOutput.click(function(){
+		$(this).hide();
+		$cssInput.show().focus();
+		draw(true);		
+	});
+	$cssInput.blur(function(){
+		$(this).hide();
+		renderCode('css');
+		$cssOutput.show();
+		draw(false);
 	});	
-	$('body').mouseup(function(){
-		cssSandbox_dragging = false;		
-	}).mousemove(function(ev){
-		if(cssSandbox_dragging){
-			$cssSandbox_board.css({
-				top : ev.pageY - offY,
-				left : ev.pageX - offX
-			});
-		}		
-	});
-	
-	//Minimize and Maximize #cssSandbox-board
-	$cssSandbox_min.click(function(){
-		if(cssSandbox_minimize){
-			cssSandbox_minimize = false;
-			$cssSandbox_min.attr('title','Minimize').html('-');
-			$cssSandbox_content.slideDown(200);
-		}else{
-			cssSandbox_minimize = true;
-			$cssSandbox_min.attr('title', 'Maximize').html('+');
-			$cssSandbox_content.slideUp(200);
-		}		
-	});
-	
-	//Clear textareas
-	$('#cssSandbox-clear-html').click(function(){
-		$cssSandbox_html.val('');
-		redrawSandbox();		
-	});
-	$('#cssSandbox-clear-css').click(function(){
-		$cssSandbox_css.val('');
-		redrawSandbox();		
-	});
-	
-	//Reset CSS option	
-	$cssSandbox_reset.change(function(){
-		if($cssSandbox_reset.attr('checked')){
-			$cssSandbox_style_reset.html(cssSandbox_reset_content);			
-		}else{
-			$cssSandbox_style_reset.html('');
-		}
-	});
-	
-	
-	
-})
+});
